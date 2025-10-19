@@ -12,8 +12,8 @@ public class Application {
         try {
             input = Console.readLine();
         } catch (java.util.NoSuchElementException e) {
-            System.out.println("결과 : 0");
-            return;
+            // 입력 스트림이 닫힌 경우 - 이는 예외 상황이므로 예외 발생
+            throw new IllegalArgumentException("입력을 읽을 수 없습니다.");
         }
 
         if (input == null || input.isBlank()) {

@@ -11,11 +11,11 @@ class ApplicationTest extends NsTest {
 
     // 기능 1 테스트: 기본 문자열 분리 (쉽표 기준)
     @Test
-    void 빈_문자열은_0을_반환한다() {
-        assertSimpleTest(() -> {
-            run("");
-            assertThat(output()).contains("결과 : 0");
-        });
+    void 빈_문자열은_오류이다() {
+        assertSimpleTest(() ->
+                assertThatThrownBy(() -> runException(""))
+                        .isInstanceOf(IllegalArgumentException.class)
+        );
     }
 
     @Test
