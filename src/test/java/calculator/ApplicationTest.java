@@ -190,15 +190,66 @@ class ApplicationTest extends NsTest {
                 .isInstanceOf(IllegalArgumentException.class)
         );
     }
-/*
+
+    //기능 4-1 테스트: 커스텀 구분자 적용
     @Test
     void 커스텀_구분자_사용() {
-        assertSimpleTest(() -> {
-            run("//;\\n1");
-            assertThat(output()).contains("결과 : 1");
-        });
+        InputParser parser = new InputParser();
+        ParsedInput result = parser.parse("//;\n1");
+        
+        assertThat(result.getNumbers()).containsExactly("1");
     }
-
+    
+    @Test
+    void 커스텀_구분자_실제_줄바꿈_입력() {
+        InputParser parser = new InputParser();
+        ParsedInput result = parser.parse("//;");
+        
+        //실제 줄바꿈 입력의 경우 빈 배열 반환
+        assertThat(result.getNumbers()).isEmpty();
+        assertThat(result.getDelimiters()).containsExactly(";", ",", ":");
+    }
+    
+    @Test
+    void 커스텀_구분자_문자열_테스트() {
+        Calculator calculator = new Calculator();
+        
+        //문자열에 \n 포함된 경우 (실제 줄바꿈)
+        String input1 = "//;\n1;2;3";
+        int result1 = calculator.add(input1);
+        assertThat(result1).isEqualTo(6);
+    }
+    
+    @Test
+    void 커스텀_구분자_실제_줄바꿈_테스트() {
+        Calculator calculator = new Calculator();
+        
+        //실제 줄바꿈 입력 시뮬레이션
+        String input2 = "//;";
+        int result2 = calculator.add(input2);
+        assertThat(result2).isEqualTo(0);
+    }
+    
+    @Test
+    void 커스텀_구분자_문자열_백슬래시_테스트() {
+        Calculator calculator = new Calculator();
+        
+        //문자열에 \n 포함된 경우 (백슬래시 + n)
+        String input1 = "//ㄹㄹ\\n1ㄹㄹ3ㄹㄹ4";
+        int result1 = calculator.add(input1);
+        assertThat(result1).isEqualTo(8);
+    }
+    
+    @Test
+    void 커스텀_구분자_실제_줄바꿈_백슬래시_테스트() {
+        Calculator calculator = new Calculator();
+        
+        //실제 줄바꿈 입력 시뮬레이션 (백슬래시 + n)
+        String input2 = "//ㄹㄹ\\n";
+        int result2 = calculator.add(input2);
+        assertThat(result2).isEqualTo(0);
+    }
+/*
     @Test
     void 예외_테스트() {
         assertSimpleTest(() ->
