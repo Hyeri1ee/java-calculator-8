@@ -31,8 +31,12 @@ public class Application {
                 //\n이 없는 경우: "//ㄹㄹ" 형태 - 추가 입력 받기
                 try {
                     String additionalInput = Console.readLine();
-                    if (additionalInput != null && !additionalInput.isBlank()) {
+                    if (additionalInput != null) {
                         input = input + "\n" + additionalInput;
+                        // 추가 입력이 빈 문자열인 경우, 실제로는 빈 줄이므로 \n을 하나 더 추가
+                        if (additionalInput.isEmpty()) {
+                            input = input + "\n";
+                        }
                     }
                 } catch (java.util.NoSuchElementException e) {
                     //추가 입력이 없으면 그대로 처리

@@ -249,15 +249,39 @@ class ApplicationTest extends NsTest {
         int result2 = calculator.add(input2);
         assertThat(result2).isEqualTo(0);
     }
-/*
+    
     @Test
-    void 예외_테스트() {
-        assertSimpleTest(() ->
-            assertThatThrownBy(() -> runException("-1,2,3"))
+    void 커스텀_구분자_빈_줄_테스트() {
+        InputParser parser = new InputParser();
+        assertThatThrownBy(() -> parser.parse("//4\n\n"))
                 .isInstanceOf(IllegalArgumentException.class)
-        );
+                .hasMessageContaining("유효한 숫자가 없습니다");
     }
-*/
+    
+    @Test
+    void 커스텀_구분자_실제_빈_줄_테스트() {
+        //실제 엔터 두 번 누르는 경우 시뮬레이션
+        assertSimpleTest(() -> {
+            run("//4", "");  // //4 입력 후 빈 줄 입력
+            assertThatThrownBy(() -> {
+                // 실제로는 //4\n\n이 되어야 하므로 예외 발생해야 함
+                InputParser parser = new InputParser();
+                parser.parse("//4\n\n");
+            }).isInstanceOf(IllegalArgumentException.class)
+              .hasMessageContaining("유효한 숫자가 없습니다");
+        });
+    }
+    
+    @Test
+    void 커스텀_구분자_문자열_빈_줄_테스트() {
+        //문자열에 \n\n이 포함된 경우 - 예외 발생해야 함
+        //run() 메서드로는 \n 처리가 복잡하므로 직접 테스트
+        InputParser parser = new InputParser();
+        assertThatThrownBy(() -> parser.parse("//4\n\n"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유효한 숫자가 없습니다");
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});

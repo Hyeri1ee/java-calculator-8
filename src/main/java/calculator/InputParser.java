@@ -100,7 +100,10 @@ public class InputParser {
             }
             
             try {
-                Integer.parseInt(number.trim());
+                int num = Integer.parseInt(number.trim());
+                if (num < 0) {
+                    throw new IllegalArgumentException("음수는 입력할 수 없습니다: " + num);
+                }
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("숫자가 아닌 값이 입력되었습니다: " + number);
             }
